@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Titanic | Survival Predictor</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #071827;
+            color: white;
+            min-height: 100vh;
+            padding: 35px 18px;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 35px 15px 40px;
+        }
+
+        .tag {
+            display: inline-block;
+            color: #7ed8df;
+            border: 1px solid #27546a;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 6vw, 60px);
+            margin-bottom: 15px;
+            line-height: 1.15;
+        }
+
+        h1 span {
+            color: #70d5df;
+        }
+
+        .hero p {
+            color: #aabac8;
+            font-size: 15px;
+            max-width: 580px;
+            margin: auto;
+            line-height: 1.8;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 0.85fr 1.3fr;
+            gap: 25px;
+            align-items: stretch;
+        }
+
+        .info-card, .form-card {
+            background: #10283b;
+            border: 1px solid #254257;
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .info-card {
+            background: linear-gradient(145deg, #12364b, #0c2032);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .ship-icon {
+            font-size: 55px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 29px;
+            margin-bottom: 15px;
+        }
+
+        .info-card p {
+            color: #b2c3ce;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .fact {
+            border-top: 1px solid #315064;
+            margin-top: 35px;
+            padding-top: 20px;
+            color: #80d6df;
+            font-size: 13px;
+        }
+
+        .form-card h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .form-description {
+            color: #9eb2c2;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .field label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #d5e2eb;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px;
+            background: #091c2b;
+            border: 1px solid #345166;
+            border-radius: 9px;
+            color: white;
+            outline: none;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            border-color: #70d5df;
+        }
+
+        select option {
+            background: #10283b;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .predict-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            background: #70d5df;
+            color: #071827;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .predict-btn:hover {
+            background: #a0edf0;
+            transform: translateY(-2px);
+        }
+
+        .result-card {
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 15px;
+            background: #10283b;
+            border: 1px solid #315064;
+            text-align: center;
+        }
+
+        .result-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+
+        .survived {
+            color: #72e1b1;
+        }
+
+        .not-survived {
+            color: #ff9292;
+        }
+
+        .probability {
+            font-size: 35px;
+            font-weight: 800;
+            color: #70d5df;
+            margin: 15px 0;
+        }
+
+        .progress-track {
+            height: 10px;
+            background: #294052;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #70d5df;
+            border-radius: 20px;
+        }
+
+        .result-card p {
+            color: #b2c3ce;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .error {
+            color: #ff9292;
+            background: #3b2028;
+            border: 1px solid #75404b;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            color: #71899a;
+            font-size: 12px;
+            margin-top: 40px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 750px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .info-card {
+                min-height: 280px;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .info-card, .form-card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header class="hero">
+        <div class="tag">MACHINE LEARNING PROJECT</div>
+
+        <h1>Titanic <span>Survival</span><br>Predictor</h1>
+
+        <p>
+            One voyage. Thousands of stories.
+            What would your chances of survival have been?
+            Explore the power of machine learning through
+            the historic Titanic disaster.
+        </p>
+    </header>
+
+    <main class="content">
+
+        <section class="info-card">
+
+            <div>
+                <div class="ship-icon">🚢</div>
+
+                <h2>Beyond the Voyage</h2>
+
+                <p>
+                    Step into history and discover how artificial
+                    intelligence can uncover patterns in passenger
+                    survival using historical Titanic passenger data.
+                </p>
+            </div>
+
+            <div class="fact">
+                POWERED BY LOGISTIC REGRESSION<br>
+                Historical Data • Predictive Analytics
+            </div>
+
+        </section>
+
+        <section class="form-card">
+
+            <h2>Passenger Details</h2>
+
+            <p class="form-description">
+                Enter the passenger information below to generate a prediction.
+            </p>
+
+            <form action="/predict" method="POST">
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label>Passenger Class</label>
+                        <select name="pclass" required>
+                            <option value="1">First Class</option>
+                            <option value="2">Second Class</option>
+                            <option value="3" selected>Third Class</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Sex</label>
+                        <select name="sex" required>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Age</label>
+                        <input type="number" name="age"
+                               min="0" max="100" step="0.1"
+                               value="25" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Siblings / Spouses</label>
+                        <input type="number" name="sibsp"
+                               min="0" max="10" value="0" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Parents / Children</label>
+                        <input type="number" name="parch"
+                               min="0" max="10" value="0" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Ticket Fare</label>
+                        <input type="number" name="fare"
+                               min="0" step="0.01"
+                               value="30" required>
+                    </div>
+
+                    <div class="field full">
+                        <label>Port of Embarkation</label>
+                        <select name="embarked" required>
+                            <option value="C">Cherbourg</option>
+                            <option value="Q">Queenstown</option>
+                            <option value="S" selected>Southampton</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="predict-btn">
+                    Predict Survival →
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    {% if result %}
+    <section class="result-card">
+
+        <h2 class="{% if result == 'Survived' %}survived{% else %}not-survived{% endif %}">
+            {% if result == 'Survived' %}
+                🎉 Passenger Survived!
+            {% else %}
+                Passenger Did Not Survive
+            {% endif %}
+        </h2>
+
+        <p>{{ message }}</p>
+
+        <div class="probability">
+            {{ probability }}%
+        </div>
+
+        <p>Estimated probability of survival</p>
+
+        <div class="progress-track">
+            <div class="progress-fill"
+                 data-probability="{{ probability }}">
+            </div>
+        </div>
+
+        <script>
+            const progressFill = document.querySelector('.progress-fill');
+            if (progressFill) {
+                const probability = Number(progressFill.dataset.probability) || 0;
+                progressFill.style.width = `${Math.min(Math.max(probability, 0), 100)}%`;
+            }
+        </script>
+
+        <p style="margin-top: 15px;">
+            This prediction is generated by your trained
+            Logistic Regression model.
+        </p>
+
+    </section>
+    {% endif %}
+
+    {% if error %}
+    <div class="error">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <footer>
+        TITANIC SURVIVAL PREDICTOR<br>
+        Built with Python, Flask, HTML & Machine Learning<br>
+        An educational machine learning project.
+    </footer>
+
+</div>
+
+</body>
+</html>

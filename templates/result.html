@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction Result | Titanic</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #071827;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+        }
+
+        .tag {
+            display: inline-block;
+            color: #70d5df;
+            border: 1px solid #31566b;
+            padding: 9px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: #10283b;
+            border: 1px solid #29475b;
+            border-radius: 22px;
+            padding: 45px 30px;
+        }
+
+        .icon {
+            font-size: 65px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(30px, 6vw, 42px);
+            margin-bottom: 15px;
+        }
+
+        .survived {
+            color: #72e1b1;
+        }
+
+        .not-survived {
+            color: #ff9292;
+        }
+
+        .message {
+            color: #b4c5d0;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .probability-box {
+            background: #091c2b;
+            border: 1px solid #345166;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .probability-label {
+            color: #a9bdca;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .probability {
+            color: #70d5df;
+            font-size: 43px;
+            font-weight: 800;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 11px;
+            background: #294052;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 18px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #70d5df;
+            border-radius: 20px;
+        }
+
+        .note {
+            color: #8fa5b5;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .back-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #70d5df;
+            color: #071827;
+            padding: 15px 28px;
+            border-radius: 10px;
+            font-weight: 800;
+            margin-top: 28px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #a0edf0;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            color: #71899a;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 480px) {
+            .result-card {
+                padding: 35px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="tag">TITANIC SURVIVAL PREDICTOR</div>
+
+    <div class="result-card">
+
+        {% if result == "Survived" %}
+
+            <div class="icon">🎉</div>
+
+            <h1 class="survived">
+                Passenger Survived!
+            </h1>
+
+        {% else %}
+
+            <div class="icon">⚓</div>
+
+            <h1 class="not-survived">
+                Passenger Did Not Survive
+            </h1>
+
+        {% endif %}
+
+        <p class="message">
+            {{ message }}
+        </p>
+
+        <div class="probability-box">
+
+            <p class="probability-label">
+                Estimated Probability of Survival
+            </p>
+
+            <div class="probability">
+                {{ probability }}%
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill">
+                </div>
+            </div>
+
+        </div>
+
+        <p class="note">
+            This prediction was generated using a trained
+            Logistic Regression machine learning model.
+            It represents an estimate, not a certainty.
+        </p>
+
+        <a href="/" class="back-btn">
+            ← Make Another Prediction
+        </a>
+
+    </div>
+
+    <footer>
+        Beyond the Voyage | Python • Flask • Machine Learning
+    </footer>
+
+</div>
+
+<script>
+    // Set the width of the progress fill element based on the probability value
+    document.getElementById('progressFill').style.width = '{{ probability }}%';
+</script>
+
+</body>
+</html>
