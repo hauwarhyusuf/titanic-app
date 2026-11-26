@@ -6,3 +6,4 @@ markupsafe
 werkzeug
 scikit-learn
 numpy
+pandas
